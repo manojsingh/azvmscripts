@@ -7,9 +7,18 @@ def isInstanceinPendingDelete():
     imds_tags_url = config.get('imds', 'imds_tags_url')
 
     # Call the IMD Service to pull VM tags
-    tags = requests.get(imds_tags_url)
+    tags = requests.get(imds_tags_url, headers={"Metadata":"true"})
+    # tags = 'PendingDelete:true;anothertag:scloud;testtag:123'
 
-    logger.warning(tags)    
+    deleteTag = config.get('imds', 'pending_delete_tag')
+
+    if deleteTag in tags:
+        logger.warning("Pending Delete is true ...starting custom clean up logic")
+    else:
+        logger.warning("Pending Delete is false, nothing to do")
+
+
+    # logger.warning(tags.text)    
     
 
     

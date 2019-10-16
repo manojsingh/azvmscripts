@@ -1,15 +1,16 @@
 from logconfig import logger
 from configuration import config
+import requests
 
 def isInstanceinPendingDelete():
 
     imds_tags_url = config.get('imds', 'imds_tags_url')
 
     # Call the IMD Service to pull VM tags
-    tags = requests.get('imds_tags_url')
+    tags = requests.get(imds_tags_url)
 
     logger.warning(tags)    
-    # import requests
+    
 
     
     # if resp.status_code != 200:

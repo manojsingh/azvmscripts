@@ -16,3 +16,4 @@ def post_metrics():
 
 
 collect_metrics()
+post_metrics()

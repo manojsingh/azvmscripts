@@ -1,49 +1,52 @@
 from logconfig import logger
 from configuration import config
 import requests
+import os
+
+accessToken = getAccessToken()
 
 def isInstanceinPendingDelete():
-
     imds_tags_url = config.get('imds', 'imds_tags_url')
 
     # Call the IMD Service to pull VM tags
     tags = requests.get(imds_tags_url, headers={"Metadata":"true"})
-    # tags = 'PendingDelete:true;anothertag:scloud;testtag:123'
+    #tags = 'PendingDelete:true;anothertag:scloud;testtag:123'
 
     deleteTag = config.get('imds', 'pending_delete_tag')
 
-    if deleteTag in tags:
-        logger.warning("Pending Delete is true ...starting custom clean up logic")
+    if deleteTag in tags.text:
+        return True
     else:
-        logger.warning("Pending Delete is false, nothing to do")
+        return False
 
+def  performCustomOperation():
+    logger.warning("Performing custom operation")
 
-    # logger.warning(tags.text)    
-    
+    ## This is where the custom logic will go
 
-    
-    # if resp.status_code != 200:
-    #     # This means something went wrong.
-    #     raise ApiError('GET /helthCheck/ {}'.format(resp.status_code))
-    # logger.warning(resp.text)
+def failLoadBalancerProbes():
+    logger.warning("Failing Health Probes")
 
-
-
-
-#if(isInstanceinPendingDelete)
-   # failLBProbes()
-    #performCustomOperation()
-    #stopCustomMetricFlow()
-    #deleteVMFromVMSS()
-
- 
 def stopCustomMetricFlow():
-    import os
+    logger.warning("Stopping the Custom Metrics")
+    removeCrontab = config.get('shell-commands', 'remove_all_crontab')
+
+    #removeCrontab = "crontab -r"
     
+    logger.warning("Deleting all cron jobs")
     # Delete all cron jobs
-    myCmd = 'crontab -r'
-    os.system(myCmd)
+    areCronsRemoved = os.system(removeCrontab)
+
+def deleteVMFromVMSS():
+    logger.warning("Deleting the VM from VMSS")
+   
 
 
-isInstanceinPendingDelete()
-
+if(isInstanceinPendingDelete()):
+    logger.warning("Pending Delete is true ...starting custom clean up logic")
+    failLoadBalancerProbes()
+    performCustomOperation()
+    stopCustomMetricFlow()
+    deleteVMFromVMSS()
+else: 
+    logger.warning("Intance not in Pending Delete, nothing to do")

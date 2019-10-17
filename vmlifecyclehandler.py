@@ -2,16 +2,18 @@ from logconfig import logger
 from configuration import config
 import requests, json, os
 
+global access_token, subscriptionId , vmScaleSetName, resourceGroupName
+
 def populateInstanceInfo():
     access_token_url = config.get('imds', 'accesstoken_url')
     response = requests.get(access_token_url, headers={"Metadata":"true"})
     response_txt = json.loads(response.text)
 
     #populate required instance variables
-    global access_token = response_txt['access_token']
-    global subscriptionId = response_txt['subscriptionId']
-    global vmScaleSetName = response_txt['vmScaleSetName']
-    global resourceGroupName = response_txt['resourceGroupName']
+    access_token = response_txt['access_token']
+    subscriptionId = response_txt['subscriptionId']
+    vmScaleSetName = response_txt['vmScaleSetName']
+    resourceGroupName = response_txt['resourceGroupName']
 
     logger.warning(access_token)
     return token

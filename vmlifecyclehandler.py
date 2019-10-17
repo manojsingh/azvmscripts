@@ -2,17 +2,18 @@ from logconfig import logger
 from configuration import config
 import requests, json, os
 
-accessToken = getAccessToken()
-
-def getAccessToken():
+def populateInstanceInfo():
     access_token_url = config.get('imds', 'accesstoken_url')
     response = requests.get(access_token_url, headers={"Metadata":"true"})
-    logger.warning("Response: " + response)
+    response_txt = json.loads(response.text)
 
-    token = json.load(response)['access_token']
+    #populate required instance variables
+    global access_token = response_txt['access_token']
+    global subscriptionId = response_txt['subscriptionId']
+    global vmScaleSetName = response_txt['vmScaleSetName']
+    global resourceGroupName = response_txt['resourceGroupName']
 
-    logger.warning("Access_Token: " + token)
-
+    logger.warning(access_token)
     return token
 
 
@@ -51,9 +52,14 @@ def stopCustomMetricFlow():
 def deleteVMFromVMSS():
     logger.warning("Deleting the VM from VMSS")
 
+    populateInstanceInfo()
+
     vm_delete_url =  config.get('vmss', 'vm_delete_url')
 
-    # vm_delete_url.format("subscriptionId", "resourceGroupName", "vmssName")
+    vm_delete_url.format(subscriptionId, resourceGroupName, vmScaleSetName)
+
+    logger.warning("The Delete URL is %s", vm_delete_url)
+
 
     # # data to be sent to api 
     # data = {'instanceIds ': [API_KEY]}

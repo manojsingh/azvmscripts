@@ -5,8 +5,8 @@ import requests, json, os
 global access_token, subscriptionId , vmScaleSetName, resourceGroupName
 
 def populateInstanceInfo():
-    access_token_url = config.get('imds', 'accesstoken_url')
-    response = requests.get(access_token_url, headers={"Metadata":"true"})
+    imds_url = config.get('imds', 'imds_url')
+    response = requests.get(imds_url, headers={"Metadata":"true"})
     response_txt = json.loads(response.text)
 
     logger.warning(access_token_url)
@@ -14,6 +14,7 @@ def populateInstanceInfo():
 
     #populate required instance variables
     access_token = response_txt['access_token']
+    vmId = response_txt['vmId']
     subscriptionId = response_txt['subscriptionId']
     vmScaleSetName = response_txt['vmScaleSetName']
     resourceGroupName = response_txt['resourceGroupName']
@@ -21,10 +22,10 @@ def populateInstanceInfo():
     logger.warning(access_token)
 
 def isInstanceinPendingDelete():
-    imds_tags_url = config.get('imds', 'imds_tags_url')
+    imds_url = config.get('imds', 'imds_url')
 
     # Call the IMD Service to pull VM tags
-    tags = requests.get(imds_tags_url, headers={"Metadata":"true"})
+    tags = requests.get(imds_url, headers={"Metadata":"true"})
     #tags = 'PendingDelete:true;anothertag:scloud;testtag:123'
 
     deleteTag = config.get('imds', 'pending_delete_tag')

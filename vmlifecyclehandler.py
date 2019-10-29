@@ -9,6 +9,9 @@ def populateInstanceInfo():
     response = requests.get(access_token_url, headers={"Metadata":"true"})
     response_txt = json.loads(response.text)
 
+    logger.warning(access_token_url)
+
+
     #populate required instance variables
     access_token = response_txt['access_token']
     subscriptionId = response_txt['subscriptionId']
@@ -16,8 +19,6 @@ def populateInstanceInfo():
     resourceGroupName = response_txt['resourceGroupName']
 
     logger.warning(access_token)
-    return token
-
 
 def isInstanceinPendingDelete():
     imds_tags_url = config.get('imds', 'imds_tags_url')
@@ -41,6 +42,8 @@ def  performCustomOperation():
 def failLoadBalancerProbes():
     logger.warning("Failing Health Probes")
 
+    requests.get("http://localhost:900/fail", headers={"Metadata":"true"})
+
 def stopCustomMetricFlow():
     logger.warning("Stopping the Custom Metrics")
     removeCrontab = config.get('shell-commands', 'remove_all_crontab')
@@ -57,7 +60,6 @@ def deleteVMFromVMSS():
     populateInstanceInfo()
 
     vm_delete_url =  config.get('vmss', 'vm_delete_url')
-
     vm_delete_url.format(subscriptionId, resourceGroupName, vmScaleSetName)
 
     logger.warning("The Delete URL is %s", vm_delete_url)
@@ -70,11 +72,12 @@ def deleteVMFromVMSS():
    
 
 
-if(isInstanceinPendingDelete()):
-    logger.warning("Pending Delete is true ...starting custom clean up logic")
-    failLoadBalancerProbes()
-    performCustomOperation()
-    stopCustomMetricFlow()
-    deleteVMFromVMSS()
-else: 
-    logger.warning("Intance not in Pending Delete, nothing to do")
+# if(isInstanceinPendingDelete()):
+#     logger.warning("Pending Delete is true ...starting custom clean up logic")
+#     failLoadBalancerProbes()
+#     stopCustomMetricFlow()
+#     performCustomOperation()
+#     deleteVMFromVMSS()
+# else: 
+#     logger.warning("Intance not in Pending Delete, nothing to do")
+populateInstanceInfo()

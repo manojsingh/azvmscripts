@@ -2,6 +2,8 @@ import psutil
 import requests
 from logconfig import logger
 
+
+
 def collect_metrics():
     logger.warning("Collecting Metrics .....")
 

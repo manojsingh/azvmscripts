@@ -4,7 +4,7 @@ from bottle import route, run, redirect, response
 
 hostname = 'localhost'
 hostport = 9000
-isHealthy = True  
+global isHealthy  
 
 def writebody():
     body = '<html><head><title>VM Health Check</title></head>'
@@ -19,7 +19,6 @@ def root():
 
 @route('/health')
 def isHealthy():
-    global isHealthy
 
     if(isHealthy):
         isHealthy = True
@@ -32,7 +31,6 @@ def isHealthy():
 
 @route('/fail')
 def fail():
-    global isHealthy
     isHealthy = False
     redirect('/health')
 

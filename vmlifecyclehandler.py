@@ -3,7 +3,8 @@ from configuration import config
 import requests, json, os
 
 class VMInstance:
-        '''This is the current VM Instance'''
+
+    '''This is the current VM Instance'''
         
     def __init__(self, access_token, subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags):
         self.access_token = access_token

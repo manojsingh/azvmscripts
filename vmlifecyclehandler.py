@@ -2,6 +2,8 @@ from logconfig import logger
 from configuration import config
 import requests, json, os
 
+vmInstance = None
+
 class VMInstance:
     '''This is the current VM Instance'''
         
@@ -59,7 +61,6 @@ def populateInstanceInfo():
 
     #instantiate vmInstance
     vmInstance = VMInstance(access_token,subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags)
-    logger.warning(vmInstance)
 
     logger.warning("VM Instance information populated")
 
@@ -108,16 +109,11 @@ def deleteVMFromVMSS():
     logger.warning("Deleting the VM from VMSS")
 
     vm_delete_url =  config.get('vmss', 'vm_delete_url')
-    vm_delete_url.format(subscriptionId = "testSSID", resourceGroupName = "rgname", vmScaleSetName = "vmssName", instanceId = "instanceId")
+    formatted_url = vm_delete_url.format(subscriptionId = vmInstance.subscriptionId, resourceGroupName = "rgname", vmScaleSetName = "vmssName", instanceId = "instanceId")
 
-    logger.warning("The Delete URL is - ", vm_delete_url)
+    logger.warning("The Delete URL is - " +  formatted_url)
 
-
-    # # data to be sent to api 
-    # data = {'instanceIds ': [API_KEY]}
-
-    # r = requests.post(url = API_ENDPOINT, data = data) 
-   
+    #requests.delete(formatted_url, data={})
 
 
 # if(isInstanceinPendingDelete()):
@@ -129,5 +125,5 @@ def deleteVMFromVMSS():
 # else: 
 #     logger.warning("Instance not in Pending Delete, nothing to do")
 populateInstanceInfo()
-#logger.warning(vmInstance)
+logger.warning(vmInstance)
 deleteVMFromVMSS()

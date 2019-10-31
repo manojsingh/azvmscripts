@@ -3,7 +3,6 @@ from configuration import config
 import requests, json, os
 
 class VMInstance:
-
     '''This is the current VM Instance'''
         
     def __init__(self, access_token, subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags):
@@ -87,7 +86,7 @@ This will call the health Probe URL and fail it
 """
 def failLoadBalancerProbes():
     logger.warning("Failing Health Probes")
-     requests.get("http://localhost:900/fail", headers={"Metadata":"true"})
+    requests.get("http://localhost:900/fail", headers={"Metadata":"true"})
 
 """
 This will kill the cron job which collects and submits custom metric to Azure Monitor

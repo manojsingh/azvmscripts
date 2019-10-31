@@ -1,35 +1,36 @@
 from logconfig import logger
 from configuration import config
+from vminstance import VMInstance
 import requests, json, os
 
-class VMInstance:
-    '''This is the current VM Instance'''
+# class VMInstance:
+#     '''This is the current VM Instance'''
         
-    def __init__(self, access_token, subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags):
-        self.access_token = access_token
-        self.subscriptionId = subscriptionId
-        self.vmScaleSetName = vmScaleSetName
-        self.resourceGroupName = resourceGroupName
-        self.vmId = vmId
-        self.tags = tags
+#     def __init__(self, access_token, subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags):
+#         self.access_token = access_token
+#         self.subscriptionId = subscriptionId
+#         self.vmScaleSetName = vmScaleSetName
+#         self.resourceGroupName = resourceGroupName
+#         self.vmId = vmId
+#         self.tags = tags
 
-    def __str__(self):
-        return """
-                VMInstance:
-                     Id - {vmId}
-                     SubscriptionId - {subscriptionId}
-                     ResourceGroupName - {resourceGroupName}
-                     VMScaleSetName - {vmScaleSetName}
-                     Tags - {tags}
-                     Access-Token - {access_token}
-                """.format(
-                    vmId = self.vmId,
-                    subscriptionId = self.subscriptionId,
-                    resourceGroupName = self.resourceGroupName,
-                    vmScaleSetName = self.vmScaleSetName,
-                    tags = self.tags,
-                    access_token = self.access_token
-                )
+#     def __str__(self):
+#         return """
+#                 VMInstance:
+#                      Id - {vmId}
+#                      SubscriptionId - {subscriptionId}
+#                      ResourceGroupName - {resourceGroupName}
+#                      VMScaleSetName - {vmScaleSetName}
+#                      Tags - {tags}
+#                      Access-Token - {access_token}
+#                 """.format(
+#                     vmId = self.vmId,
+#                     subscriptionId = self.subscriptionId,
+#                     resourceGroupName = self.resourceGroupName,
+#                     vmScaleSetName = self.vmScaleSetName,
+#                     tags = self.tags,
+#                     access_token = self.access_token
+#                 )
 
 
 
@@ -37,30 +38,30 @@ class VMInstance:
 This loads the instance info which can be used at other places for 
 calling diffrent Rest Endpoints
 """
-def populateInstanceInfo():
-    imds_url = config.get('imds', 'imds_url')
-    response = requests.get(imds_url, headers={"Metadata":"true"})
-    response_txt = json.loads(response.text)
-    logger.warning("Response:" + str(response.text))
+# def populateInstanceInfo():
+#     imds_url = config.get('imds', 'imds_url')
+#     response = requests.get(imds_url, headers={"Metadata":"true"})
+#     response_txt = json.loads(response.text)
+#     logger.warning("Response:" + str(response.text))
 
-    #populate required instance variables
-    vmId = response_txt['vmId']
-    subscriptionId = response_txt['subscriptionId']
-    vmScaleSetName = response_txt['vmScaleSetName']
-    resourceGroupName = response_txt['resourceGroupName']
-    tags = response_txt['tags']
+#     #populate required instance variables
+#     vmId = response_txt['vmId']
+#     subscriptionId = response_txt['subscriptionId']
+#     vmScaleSetName = response_txt['vmScaleSetName']
+#     resourceGroupName = response_txt['resourceGroupName']
+#     tags = response_txt['tags']
 
-    #populate access_token
-    accesstoken_url = config.get('imds', 'accesstoken_url')
+#     #populate access_token
+#     accesstoken_url = config.get('imds', 'accesstoken_url')
 
-    access_token_response = requests.get(accesstoken_url, headers={"Metadata":"true"})
-    access_token_text = json.loads(access_token_response.text)
-    access_token = access_token_text['access_token']
+#     access_token_response = requests.get(accesstoken_url, headers={"Metadata":"true"})
+#     access_token_text = json.loads(access_token_response.text)
+#     access_token = access_token_text['access_token']
 
-    #instantiate vmInstance
-    vmInstance = VMInstance(access_token,subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags)
+#     #instantiate vmInstance
+#     vmInstance = VMInstance(access_token,subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags)
 
-    return vmInstance
+#     return vmInstance
 
 def isInstanceinPendingDelete():
     deleteTag = config.get('imds', 'pending_delete_tag')
@@ -106,7 +107,9 @@ def deleteVMFromVMSS():
     logger.warning("Deleting the VM from VMSS")
 
     vm_delete_url =  config.get('vmss', 'vm_delete_url')
-    formatted_url = vm_delete_url.format(subscriptionId = vmInstance.subscriptionId, resourceGroupName = "rgname", vmScaleSetName = "vmssName", instanceId = "instanceId")
+    formatted_url = vm_delete_url.format(subscriptionId = vmInstance.subscriptionId, \
+         resourceGroupName = vmInstance.resourceGroupName,\
+              vmScaleSetName = vmInstance.vmScaleSetName, instanceId = vmInstance.vmId)
 
     logger.warning("The Delete URL is - " +  formatted_url)
 
@@ -122,6 +125,7 @@ def deleteVMFromVMSS():
 # else: 
 #     logger.warning("Instance not in Pending Delete, nothing to do")
 
-vmInstance = populateInstanceInfo()
+#vmInstance = populateInstanceInfo()
+vmInstance = VMInstance().populate()
 logger.warning(vmInstance)
 deleteVMFromVMSS()

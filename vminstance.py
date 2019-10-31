@@ -9,6 +9,7 @@ class VMInstance:
         return """
                 VMInstance:
                      Id - {vmId}
+                     Name - {name}
                      SubscriptionId - {subscriptionId}
                      ResourceGroupName - {resourceGroupName}
                      VMScaleSetName - {vmScaleSetName}
@@ -16,6 +17,7 @@ class VMInstance:
                      Access-Token - {access_token}
                 """.format(
                     vmId = self.vmId,
+                    name = self.name,
                     subscriptionId = self.subscriptionId,
                     resourceGroupName = self.resourceGroupName,
                     vmScaleSetName = self.vmScaleSetName,
@@ -32,10 +34,10 @@ class VMInstance:
         imds_url = config.get('imds', 'imds_url')
         response = requests.get(imds_url, headers={"Metadata":"true"})
         response_txt = json.loads(response.text)
-        logger.warning("Response:" + str(response.text))
 
         #populate required instance variables
         self.vmId = response_txt['vmId']
+        self.name = response_txt['name']
         self.subscriptionId = response_txt['subscriptionId']
         self.vmScaleSetName = response_txt['vmScaleSetName']
         self.resourceGroupName = response_txt['resourceGroupName']

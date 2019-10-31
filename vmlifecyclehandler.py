@@ -3,6 +3,9 @@ from configuration import config
 from vminstance import VMInstance
 import requests, json, os
 
+"""
+Check if the vm needs to be deleted
+"""
 def isInstanceinPendingDelete():
     deleteTag = config.get('imds', 'pending_delete_tag')
 
@@ -25,7 +28,7 @@ This will call the health Probe URL and fail it
 """
 def failLoadBalancerProbes():
     logger.warning("Failing Health Probes")
-    requests.get("http://localhost:900/fail", headers={"Metadata":"true"})
+    requests.get("http://localhost:900/fail")
 
 """
 This will kill the cron job which collects and submits custom metric to Azure Monitor
@@ -53,17 +56,17 @@ def deleteVMFromVMSS():
 
     logger.warning("The Delete URL is - " +  formatted_url)
 
-    #requests.delete(formatted_url, data={})
+    requests.delete(formatted_url, data={})
 
 
-# if(isInstanceinPendingDelete()):
-#     logger.warning("Pending Delete is true ...starting custom clean up logic")
-#     failLoadBalancerProbes()
-#     stopCustomMetricFlow()
-#     performCustomOperation()
-#     deleteVMFromVMSS()
-# else: 
-#     logger.warning("Instance not in Pending Delete, nothing to do")
+if(isInstanceinPendingDelete()):
+    logger.warning("Pending Delete is true ...starting custom clean up logic")
+    failLoadBalancerProbes()
+    stopCustomMetricFlow()
+    performCustomOperation()
+    deleteVMFromVMSS()
+else: 
+    logger.warning("Instance not in Pending Delete, nothing to do")
 
 #vmInstance = populateInstanceInfo()
 vmInstance = VMInstance().populate()

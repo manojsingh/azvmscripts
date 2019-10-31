@@ -108,9 +108,9 @@ def deleteVMFromVMSS():
     logger.warning("Deleting the VM from VMSS")
 
     vm_delete_url =  config.get('vmss', 'vm_delete_url')
-    vm_delete_url.format("subscriptionId", "resourceGroupName", "vmScaleSetName")
+    vm_delete_url.format(subscriptionId = "testSSID", resourceGroupName = "rgname", vmScaleSetName = "vmssName", instanceId = "instanceId")
 
-    logger.warning("The Delete URL is %s", vm_delete_url)
+    logger.warning("The Delete URL is - ", vm_delete_url)
 
 
     # # data to be sent to api 

@@ -12,7 +12,7 @@ Check if the vm needs to be deleted
 def isInstanceinPendingDelete():
     deleteTag = config.get('imds', 'pending_delete_tag')
 
-    if deleteTag in vmInstance.tags.text:
+    if deleteTag in vmInstance.tags:
         return True
     else:
         return False

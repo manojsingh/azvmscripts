@@ -86,8 +86,6 @@ def stopCustomMetricFlow():
 def deleteVMFromVMSS():
     logger.warning("Deleting the VM from VMSS")
 
-    populateInstanceInfo()
-
     vm_delete_url =  config.get('vmss', 'vm_delete_url')
     vm_delete_url.format(subscriptionId, resourceGroupName, vmScaleSetName)
 
@@ -110,4 +108,4 @@ def deleteVMFromVMSS():
 # else: 
 #     logger.warning("Intance not in Pending Delete, nothing to do")
 populateInstanceInfo()
-#vmInstance.showInstanceInfo()
+vmInstance.showInstanceInfo()

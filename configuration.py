@@ -1,8 +1,6 @@
 from configparser import SafeConfigParser
 from logconfig import logger
 
-import codecs
-
 config = SafeConfigParser()
-
+#loading config file
 config.read('config.ini')

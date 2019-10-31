@@ -2,8 +2,6 @@ from logconfig import logger
 from configuration import config
 import requests, json, os
 
-global vmInstance 
-
 class VMInstance:
     '''This is the current VM Instance'''
         
@@ -62,8 +60,7 @@ def populateInstanceInfo():
     #instantiate vmInstance
     vmInstance = VMInstance(access_token,subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags)
 
-    logger.warning("VM Instance information populated")
-
+    return vmInstance
 
 def isInstanceinPendingDelete():
     deleteTag = config.get('imds', 'pending_delete_tag')
@@ -124,6 +121,7 @@ def deleteVMFromVMSS():
 #     deleteVMFromVMSS()
 # else: 
 #     logger.warning("Instance not in Pending Delete, nothing to do")
-populateInstanceInfo()
+
+vmInstance = populateInstanceInfo()
 logger.warning(vmInstance)
 deleteVMFromVMSS()

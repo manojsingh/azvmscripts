@@ -4,15 +4,6 @@ import requests, json
 
 class VMInstance:
     '''This is the current VM Instance'''
-        
-    def __init__(self):
-        self.populate()
-        # self.access_token = access_token
-        # self.subscriptionId = subscriptionId
-        # self.vmScaleSetName = vmScaleSetName
-        # self.resourceGroupName = resourceGroupName
-        # self.vmId = vmId
-        # self.tags = tags
 
     def __str__(self):
         return """
@@ -31,7 +22,12 @@ class VMInstance:
                     tags = self.tags,
                     access_token = self.access_token
                 )
-    
+
+
+    """
+    This loads the instance info which can be used at other places for 
+    calling diffrent Rest Endpoints
+    """
     def populate(self):
         imds_url = config.get('imds', 'imds_url')
         response = requests.get(imds_url, headers={"Metadata":"true"})
@@ -52,8 +48,5 @@ class VMInstance:
         access_token_text = json.loads(access_token_response.text)
         self.access_token = access_token_text['access_token']
 
-        #instantiate vmInstance
-        #vmInstance = VMInstance(access_token,subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags)
-
+        logger.warning("Returning populated VMInstance")
         return self
-

@@ -14,13 +14,13 @@ class VMInstance:
         self.vmId = vmId
         self.tags = tags
 
-    def showInstanceInfo():
-        logger.warning(access_token)
-        logger.warning(subscriptionId)
-        logger.warning(vmScaleSetName)
-        logger.warning(resourceGroupName)
-        logger.warning(vmId)
-        logger.warning(tags)
+    def showInstanceInfo(self):
+        logger.warning(self.access_token)
+        logger.warning(self.subscriptionId)
+        logger.warning(self.vmScaleSetName)
+        logger.warning(self.resourceGroupName)
+        logger.warning(self.vmId)
+        logger.warning(self.tags)
 
 
 
@@ -28,8 +28,7 @@ def populateInstanceInfo():
     imds_url = config.get('imds', 'imds_url')
     response = requests.get(imds_url, headers={"Metadata":"true"})
     response_txt = json.loads(response.text)
-
-    logger.warning(response_txt)
+    logger.warning(response.text)
 
     #populate required instance variables
     vmId = response_txt['vmId']
@@ -45,7 +44,9 @@ def populateInstanceInfo():
     access_token_text = json.loads(access_token_response.text)
     access_token = access_token_text['access_token']
 
-    global vmInstance = VMInstance(access_token,subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags)
+    #instantiate vmInstance
+    vmInstance = VMInstance(access_token,subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags)
+    vmInstance.showInstanceInfo()
 
 
 def isInstanceinPendingDelete():
@@ -109,4 +110,4 @@ def deleteVMFromVMSS():
 # else: 
 #     logger.warning("Intance not in Pending Delete, nothing to do")
 populateInstanceInfo()
-vmInstance.showInstanceInfo()
+#vmInstance.showInstanceInfo()

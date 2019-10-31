@@ -3,6 +3,9 @@ from configuration import config
 from vminstance import VMInstance
 import requests, json, os
 
+vmInstance = VMInstance().populate()
+logger.warning(vmInstance)
+
 """
 Check if the vm needs to be deleted
 """
@@ -40,6 +43,7 @@ def stopCustomMetricFlow():
     #removeCrontab = "crontab -r"
     
     logger.warning("Deleting all cron jobs")
+   
     # Delete all cron jobs
     areCronsRemoved = os.system(removeCrontab)
 
@@ -58,7 +62,6 @@ def deleteVMFromVMSS():
 
     requests.delete(formatted_url, data={})
 
-
 if(isInstanceinPendingDelete()):
     logger.warning("Pending Delete is true ...starting custom clean up logic")
     failLoadBalancerProbes()
@@ -68,7 +71,4 @@ if(isInstanceinPendingDelete()):
 else: 
     logger.warning("Instance not in Pending Delete, nothing to do")
 
-#vmInstance = populateInstanceInfo()
-vmInstance = VMInstance().populate()
-logger.warning(vmInstance)
-deleteVMFromVMSS()
+

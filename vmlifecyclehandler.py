@@ -14,21 +14,43 @@ class VMInstance:
         self.vmId = vmId
         self.tags = tags
 
-    def showInstanceInfo(self):
-        logger.warning(self.access_token)
-        logger.warning(self.subscriptionId)
-        logger.warning(self.vmScaleSetName)
-        logger.warning(self.resourceGroupName)
-        logger.warning(self.vmId)
-        logger.warning(self.tags)
+    # def showInstanceInfo(self):
+    #     logger.warning(self.access_token)
+    #     logger.warning(self.subscriptionId)
+    #     logger.warning(self.vmScaleSetName)
+    #     logger.warning(self.resourceGroupName)
+    #     logger.warning(self.vmId)
+    #     logger.warning(self.tags)
+
+    def __str__(self):
+        return """
+                VMInstance:
+                     Id - {vmId}
+                     SubscriptionId - {subscriptionId}
+                     ResourceGroupName - {resourceGroupName}
+                     VMScaleSetName - {vmScaleSetName}
+                     Tags - {tags}
+                     Access-Token - {access_token}
+                """.format(
+                    vmId = self.vmId,
+                    subscriptionId = self.subscriptionId,
+                    resourceGroupName = self.resourceGroupName,
+                    vmScaleSetName = self.vmScaleSetName,
+                    tags = self.tags,
+                    access_token = self.access_token
+                )
 
 
 
+"""
+This loads the instance info which can be used at other places for 
+calling diffrent Rest Endpoints
+"""
 def populateInstanceInfo():
     imds_url = config.get('imds', 'imds_url')
     response = requests.get(imds_url, headers={"Metadata":"true"})
     response_txt = json.loads(response.text)
-    logger.warning(response.text)
+    logger.warning("Response:" + str(response.text))
 
     #populate required instance variables
     vmId = response_txt['vmId']
@@ -46,7 +68,8 @@ def populateInstanceInfo():
 
     #instantiate vmInstance
     vmInstance = VMInstance(access_token,subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags)
-    vmInstance.showInstanceInfo()
+    #vmInstance.showInstanceInfo()
+    print(vmInstance)
 
 
 def isInstanceinPendingDelete():

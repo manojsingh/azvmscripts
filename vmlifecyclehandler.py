@@ -1,37 +1,38 @@
 from logconfig import logger
 from configuration import config
+from vminstance import VMInstance
 import requests, json, os
 
-vmInstance = None
+global vmInstance 
 
-class VMInstance:
-    '''This is the current VM Instance'''
+# class VMInstance:
+#     '''This is the current VM Instance'''
         
-    def __init__(self, access_token, subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags):
-        self.access_token = access_token
-        self.subscriptionId = subscriptionId
-        self.vmScaleSetName = vmScaleSetName
-        self.resourceGroupName = resourceGroupName
-        self.vmId = vmId
-        self.tags = tags
+#     def __init__(self, access_token, subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags):
+#         self.access_token = access_token
+#         self.subscriptionId = subscriptionId
+#         self.vmScaleSetName = vmScaleSetName
+#         self.resourceGroupName = resourceGroupName
+#         self.vmId = vmId
+#         self.tags = tags
 
-    def __str__(self):
-        return """
-                VMInstance:
-                     Id - {vmId}
-                     SubscriptionId - {subscriptionId}
-                     ResourceGroupName - {resourceGroupName}
-                     VMScaleSetName - {vmScaleSetName}
-                     Tags - {tags}
-                     Access-Token - {access_token}
-                """.format(
-                    vmId = self.vmId,
-                    subscriptionId = self.subscriptionId,
-                    resourceGroupName = self.resourceGroupName,
-                    vmScaleSetName = self.vmScaleSetName,
-                    tags = self.tags,
-                    access_token = self.access_token
-                )
+#     def __str__(self):
+#         return """
+#                 VMInstance:
+#                      Id - {vmId}
+#                      SubscriptionId - {subscriptionId}
+#                      ResourceGroupName - {resourceGroupName}
+#                      VMScaleSetName - {vmScaleSetName}
+#                      Tags - {tags}
+#                      Access-Token - {access_token}
+#                 """.format(
+#                     vmId = self.vmId,
+#                     subscriptionId = self.subscriptionId,
+#                     resourceGroupName = self.resourceGroupName,
+#                     vmScaleSetName = self.vmScaleSetName,
+#                     tags = self.tags,
+#                     access_token = self.access_token
+#                 )
 
 
 

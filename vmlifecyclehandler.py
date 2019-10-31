@@ -14,14 +14,6 @@ class VMInstance:
         self.vmId = vmId
         self.tags = tags
 
-    # def showInstanceInfo(self):
-    #     logger.warning(self.access_token)
-    #     logger.warning(self.subscriptionId)
-    #     logger.warning(self.vmScaleSetName)
-    #     logger.warning(self.resourceGroupName)
-    #     logger.warning(self.vmId)
-    #     logger.warning(self.tags)
-
     def __str__(self):
         return """
                 VMInstance:
@@ -68,17 +60,12 @@ def populateInstanceInfo():
 
     #instantiate vmInstance
     vmInstance = VMInstance(access_token,subscriptionId, vmScaleSetName, resourceGroupName, vmId, tags)
-    #vmInstance.showInstanceInfo()
-    print(vmInstance)
+    logger.warning(vmInstance)
+
+    logger.warning("VM Instance information populated")
 
 
 def isInstanceinPendingDelete():
-    #imds_url = config.get('imds', 'imds_url')
-
-    # Call the IMD Service to pull VM tags
-    #tags = requests.get(imds_url, headers={"Metadata":"true"})
-    #tags = 'PendingDelete:true;anothertag:scloud;testtag:123'
-
     deleteTag = config.get('imds', 'pending_delete_tag')
 
     if deleteTag in vmInstance.tags.text:
@@ -86,16 +73,25 @@ def isInstanceinPendingDelete():
     else:
         return False
 
+"""
+    Here is where we need to put all the custom tasks that need to be performed
+"""
 def  performCustomOperation():
     logger.warning("Performing custom operation")
 
     ## This is where the custom logic will go
 
+
+"""
+This will call the health Probe URL and fail it
+"""
 def failLoadBalancerProbes():
     logger.warning("Failing Health Probes")
+     requests.get("http://localhost:900/fail", headers={"Metadata":"true"})
 
-    requests.get("http://localhost:900/fail", headers={"Metadata":"true"})
-
+"""
+This will kill the cron job which collects and submits custom metric to Azure Monitor
+"""
 def stopCustomMetricFlow():
     logger.warning("Stopping the Custom Metrics")
     removeCrontab = config.get('shell-commands', 'remove_all_crontab')
@@ -106,11 +102,14 @@ def stopCustomMetricFlow():
     # Delete all cron jobs
     areCronsRemoved = os.system(removeCrontab)
 
+"""
+Call the VMSS Rest API to Delete the VM
+"""
 def deleteVMFromVMSS():
     logger.warning("Deleting the VM from VMSS")
 
     vm_delete_url =  config.get('vmss', 'vm_delete_url')
-    vm_delete_url.format(subscriptionId, resourceGroupName, vmScaleSetName)
+    vm_delete_url.format("subscriptionId", "resourceGroupName", "vmScaleSetName")
 
     logger.warning("The Delete URL is %s", vm_delete_url)
 
@@ -129,6 +128,7 @@ def deleteVMFromVMSS():
 #     performCustomOperation()
 #     deleteVMFromVMSS()
 # else: 
-#     logger.warning("Intance not in Pending Delete, nothing to do")
+#     logger.warning("Instance not in Pending Delete, nothing to do")
 populateInstanceInfo()
-vmInstance.showInstanceInfo()
+#logger.warning(vmInstance)
+deleteVMFromVMSS()

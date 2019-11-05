@@ -4,10 +4,10 @@ from configuration import config
 from vminstance import VMInstance
 
 def collect_metrics():
-    logger.warning("Collecting Metrics .....")
+    logger.info("Collecting Metrics .....")
 
-    global cpu_percent = psutil.cpu_percent()
-    global memory_percent = psutil.virtual_memory()[2]
+    cpu_percent = psutil.cpu_percent()
+    memory_percent = psutil.virtual_memory()[2]
     logger.info("Current CPU utilization is %s percent.  " % cpu_percent)
     logger.info("Current memory utilization is %s percent. " % memory_percent)
 

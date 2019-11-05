@@ -31,24 +31,29 @@ class VMInstance:
     calling diffrent Rest Endpoints
     """
     def populate(self):
-        imds_url = config.get('imds', 'imds_url')
-        response = requests.get(imds_url, headers={"Metadata":"true"})
-        response_txt = json.loads(response.text)
+        logger.info("Populating Current VM instance ....")
+        try:
+            imds_url = config.get('imds', 'imds_url')
+            response = requests.get(imds_url, headers={"Metadata":"true"})
+            response_txt = json.loads(response.text)
 
-        #populate required instance variables
-        self.vmId = response_txt['vmId']
-        self.name = response_txt['name']
-        self.subscriptionId = response_txt['subscriptionId']
-        self.vmScaleSetName = response_txt['vmScaleSetName']
-        self.resourceGroupName = response_txt['resourceGroupName']
-        self.tags = response_txt['tags']
+            #populate required instance variables
+            self.vmId = response_txt['vmId']
+            self.name = response_txt['name']
+            self.subscriptionId = response_txt['subscriptionId']
+            self.vmScaleSetName = response_txt['vmScaleSetName']
+            self.resourceGroupName = response_txt['resourceGroupName']
+            self.tags = response_txt['tags']
 
-        #populate access_token
-        accesstoken_url = config.get('imds', 'accesstoken_url')
+            #populate access_token
+            accesstoken_url = config.get('imds', 'accesstoken_url')
 
-        access_token_response = requests.get(accesstoken_url, headers={"Metadata":"true"})
-        access_token_text = json.loads(access_token_response.text)
-        self.access_token = access_token_text['access_token']
+            access_token_response = requests.get(accesstoken_url, headers={"Metadata":"true"})
+            access_token_text = json.loads(access_token_response.text)
+            self.access_token = access_token_text['access_token']
 
-        logger.warning("Returning populated VMInstance")
+            logger.info("Returning populated VMInstance")
+        except:
+            logger.error("Error populating vm instance")
+
         return self

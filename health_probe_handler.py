@@ -4,7 +4,6 @@ from bottle import route, run, redirect, response
 
 hostname = 'localhost'
 hostport = 9000
-global isHealthy  
 
 def writebody():
     body = '<html><head><title>VM Health Check</title></head>'
@@ -19,20 +18,6 @@ def root():
 
 @route('/health')
 def isHealthy():
-
-    if(isHealthy):
-        isHealthy = True
         return writebody()
-    else:
-        response.status = 404
-        isHealthy = True
-        return 
-
-
-@route('/fail')
-def fail():
-    isHealthy = False
-    redirect('/health')
-
 
 run(host=hostname, port=hostport)

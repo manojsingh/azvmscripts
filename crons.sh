@@ -1,0 +1,1 @@
+2 * * * * azureuser /usr/bin/python3 metric_collector.py

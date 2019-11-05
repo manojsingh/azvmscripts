@@ -8,12 +8,12 @@ def collect_metrics():
 
     global cpu_percent = psutil.cpu_percent()
     global memory_percent = psutil.virtual_memory()[2]
-    logger.warning("Current CPU utilization is %s percent.  " % cpu_percent)
-    logger.warning("Current memory utilization is %s percent. " % memory_percent)
+    logger.info("Current CPU utilization is %s percent.  " % cpu_percent)
+    logger.info("Current memory utilization is %s percent. " % memory_percent)
 
 
 def post_metrics():
-    logger.warning("Posting Custom metrics")
+    logger.info("Posting Custom metrics")
 
     metric_post_url = config.get('monitor', 'metric_post_url')
 

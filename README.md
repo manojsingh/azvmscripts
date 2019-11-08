@@ -7,10 +7,4 @@ Contains scripts to be used in Azure VMs
 
 This template allows deploying a linux VM using new or existing resources for the Virtual Network, Storage and Public IP Address.  It also injects the custom script into the VM, configures cron jobs which will run the scripts as per the configuration.
 
-Before deploying this please make sure of the following.
-
-- Rename ```azuredeploy.json``` to ```mainTemplate.json```
-  
-  `Tags: new, exiting, resource, vm, condition, conditional`
-
-
+This Raadme file is still a work in progress (though deploy button should work)....

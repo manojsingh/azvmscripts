@@ -2,6 +2,7 @@ import psutil, requests, datetime, json
 from logconfig import logger
 from configuration import config
 from vminstance import VMInstance
+from bearer_token import BearerAuth
 
 def collect_metrics():
     logger.info("Collecting Metrics .....")
@@ -27,9 +28,9 @@ def post_metrics():
                                 cpu_percent = cpu_percent, memory_percent = memory_percent)
 
     headers = config.get('monitor', 'metric_headers');
-    formatted_headers = headers.format(clength = len(formatted_data), token = vmInstance.access_token)
+    formatted_headers = headers.format(clength = len(formatted_data))
 
-    requests.post(formatted_url, data=json.dumps(formatted_data), headers=formatted_headers)
+    requests.post(formatted_url, data=json.dumps(formatted_data), headers=formatted_headers, auth=BearerAuth(vmInstance.access_token))
 
 def getMetricPostData():
     data = """

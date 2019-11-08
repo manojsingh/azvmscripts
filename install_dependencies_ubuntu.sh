@@ -18,3 +18,14 @@ telegraf --input-filter cpu:mem --output-filter azure_monitor config > azm-teleg
 
 # replace the example config with the new generated config 
 sudo cp azm-telegraf.conf /etc/telegraf/telegraf.conf
+
+# create a folder for custom script and checkout code
+cd ~
+mkdir scripts 
+cd scripts
+
+#checkout code
+git clone https://github.com/manojsingh/azvmscripts.git
+
+# Schedule cron jobs
+crontab crons.sh

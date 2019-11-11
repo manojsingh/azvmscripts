@@ -7,4 +7,13 @@ Contains scripts to be used in Azure VMs
 
 This template allows deploying a linux VM using new or existing resources for the Virtual Network, Storage and Public IP Address.  It also injects the custom script into the VM, configures cron jobs which will run the scripts as per the configuration.
 
-This Raadme file is still a work in progress (though deploy button should work)....
+# Custom Metric Handler
+Main custom metric handler is metric_collector.py which contains methods for collecting and posting metrics. Any custom related logic will go into this file.
+
+# Polling IMDS and initiating the deletion process
+
+
+#logs
+All the activity is logged in a file called - azvmscripts.log
+
+This Readme file is still a work in progress (though deploy button should work)....

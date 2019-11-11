@@ -13,7 +13,7 @@ Main custom metric handler is metric_collector.py which contains methods for col
 # Polling IMDS and initiating the deletion process
 
 
-#logs
+# logs
 All the activity is logged in a file called - azvmscripts.log
 
 This Readme file is still a work in progress (though deploy button should work)....

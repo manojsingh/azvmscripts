@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # simple HTTP server which run a simple page for health probe
 
 from bottle import route, run, redirect, response

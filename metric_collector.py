@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import psutil, requests, datetime, json
 from logconfig import logger
 from configuration import config

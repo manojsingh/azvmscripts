@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from logconfig import logger
 from configuration import config
 from vminstance import VMInstance

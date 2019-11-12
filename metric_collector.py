@@ -29,7 +29,7 @@ def post_metrics():
     headers = config.get('monitor', 'metric_headers');
     formatted_headers = headers.format(clength = len(data))
 
-    requests.post(formatted_url, data=data_json, headers=formatted_headers, auth=BearerAuth(vmInstance.access_token))
+    requests.post(formatted_url, data=data, headers=formatted_headers, auth=BearerAuth(vmInstance.access_token))
 
 def getMetricPostData():
     data = {

@@ -32,46 +32,29 @@ def post_metrics():
     requests.post(formatted_url, data=data, headers=formatted_headers, auth=BearerAuth(vmInstance.access_token))
 
 def getMetricPostData():
-    data = {
-        'time': datetime.datetime.now().isoformat(),
-        'data':{
-            'baseData':{
-                'metric': 'VM Info',
-                'namespace': 'Samsung',
-                'dimNames':[
-                    "CPU Utilization Percentage"
-                ],
-                'series':[
-                    {
-                        'dimValue':[
-                            cpu_percent
-                        ]
-                    }
-                ]
-            }
-        }
-    }
-    # data = """
-    #        {
-    #            "time": "{timestamp}",
-    #             "data": {
-    #                 "baseData": {
-    #                     "metric": "VM Info",
-    #                     "namespace": "Samsung", 
-    #                     "dimNames": [
-    #                          "CPU Utilization Percentage"
-    #                     ],
-    #                     "series": [
-    #                         {
-    #                             "dimValues": [
-    #                                 "{cpu}"
-    #                             ]
-    #                         }
+    # data = {
+    #     'time': datetime.datetime.now().isoformat(),
+    #     'data':{
+    #         'baseData':{
+    #             'metric': 'VM Info',
+    #             'namespace': 'Samsung',
+    #             'dimNames':[
+    #                 "CPU Utilization Percentage"
+    #             ],
+    #             'series':[
+    #                 {
+    #                     'dimValue':[
+    #                         cpu_percent
     #                     ]
     #                 }
-    #             }
+    #             ]
     #         }
-    #     """
+    #     }
+    # }
+    data = "{'time':" + timestamp + "', data : {'baseData': { 'metric': 'VM Info','namespace': 'Samsung', \
+                    'dimNames': [ 'CPU Utilization Percentage'], 'series': [{'dimValues': [" + cpu_percent + \
+                        "]}]}}}"
+        
     return data
 
 

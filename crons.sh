@@ -1,3 +1,2 @@
-1 * * * * azureuser /usr/bin/python3 /home/azureuser/scripts/azvmscripts/metric_collector.py
-1 * * * * azureuser /usr/bin/python3 /home/azureuser/scripts/azvmscripts/vmlifecyclehandler.py
-1 * * * * azureuser /usr/bin/python3 /home/azureuser/scripts/azvmscripts/health.py
+* * * * * cd ~/scripts/azvmscripts && ./metric_collector.py >> ~/metric_cron.log 2>&1
+* * * * * cd ~/scripts/azvmscripts && ./vmlifecyclehandler.py >> ~/metric_cron.log 2>&1

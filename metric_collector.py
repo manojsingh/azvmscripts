@@ -29,30 +29,30 @@ def post_metrics():
     headers = config.get('monitor', 'metric_headers');
     formatted_headers = headers.format(clength = len(data))
 
-    requests.post(formatted_url, data=data, headers=formatted_headers, auth=BearerAuth(vmInstance.access_token))
+    requests.post(formatted_url, json=data, headers=formatted_headers, auth=BearerAuth(vmInstance.access_token))
 
 def getMetricPostData():
-    # data = {
-    #     'time': datetime.datetime.now().isoformat(),
-    #     'data':{
-    #         'baseData':{
-    #             'metric': 'VM Info',
-    #             'namespace': 'Samsung',
-    #             'dimNames':[
-    #                 "CPU Utilization Percentage"
-    #             ],
-    #             'series':[
-    #                 {
-    #                     'dimValue':[
-    #                         cpu_percent
-    #                     ]
-    #                 }
-    #             ]
-    #         }
-    #     }
-    # }
-    data = "{'time':" + timestamp + "', data : {'baseData': { 'metric': 'VM Info','namespace': 'Samsung', \
-                    'dimNames': [ 'CPU Utilization Percentage'], 'series': [{'dimValues': [" + cpu_percent + \
+    data = {
+        'time': datetime.datetime.now().isoformat(),
+        'data':{
+            'baseData':{
+                'metric': 'CPU Utilization',
+                'namespace': 'SamsungMetrics',
+                'dimNames':[
+                    "CPU Percentage"
+                ],
+                'series':[
+                    {
+                        'dimValue':[
+                            '3'
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+    # data = "{'time':" + timestamp + "', data : {'baseData': { 'metric': 'VM Info','namespace': 'Samsung', \
+    #                'dimNames': [ 'CPU Utilization Percentage'], 'series': [{'dimValues': [" + cpu_percent + \
                         "]}]}}}"
         
     return data

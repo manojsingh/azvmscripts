@@ -19,12 +19,12 @@ def post_metrics():
 
     metric_post_url = config.get('monitor', 'metric_post_url')
 
-    formatted_url = metric_post_url.format(location = vmIntance.location, 
+    formatted_url = metric_post_url.format(location = vmInstance.location, 
                     subscriptionId = vmInstance.subscriptionId, \
                     resourceGroupName = vmInstance.resourceGroupName,\
                     resourceName = vmInstance.name)
 
-    data = getMetricPostData()
+    data = getMetricPostData(cpu_percent)
     logger.info("Data: " + json.dumps(data))
 
     headers = config.get('monitor', 'metric_headers');
@@ -41,7 +41,7 @@ def post_metrics():
 
 
 
-def getMetricPostData():
+def getMetricPostData(metric_data):
     data = {
         'time': datetime.datetime.now().isoformat(),
         'data':{
@@ -54,7 +54,7 @@ def getMetricPostData():
                 'series':[
                     {
                         'dimValue':[
-                            '3'
+                            metric_data
                         ]
                     }
                 ]

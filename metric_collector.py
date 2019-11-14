@@ -23,13 +23,22 @@ def post_metrics():
          resourceGroupName = vmInstance.resourceGroupName,\
              resourceName = vmInstance.name)
 
-
     data = getMetricPostData()
+    logger.info("Data: " + json.dumps(data))
 
     headers = config.get('monitor', 'metric_headers');
-    formatted_headers = headers.format(clength = len(data))
+    headers = json.loads(headers)
+    headers['Content-Length'] = str(len(data))
+    headers['Authorization'] = "Bearer " + vmInstance.access_token
 
-    requests.post(formatted_url, json=data, headers=formatted_headers, auth=BearerAuth(vmInstance.access_token))
+    #formatted_headers = headers.format(clength = len(data))
+    #formatted_headers['Authorization'] = "Bearer " + vmInstance.access_token
+    logger.info("headers: " + json.dumps(headers))
+
+
+    requests.post(formatted_url, json=data, headers=headers)
+
+
 
 def getMetricPostData():
     data = {

@@ -19,9 +19,10 @@ def post_metrics():
 
     metric_post_url = config.get('monitor', 'metric_post_url')
 
-    formatted_url = metric_post_url.format(subscriptionId = vmInstance.subscriptionId, \
-         resourceGroupName = vmInstance.resourceGroupName,\
-             resourceName = vmInstance.name)
+    formatted_url = metric_post_url.format(location = vmIntance.location, 
+                    subscriptionId = vmInstance.subscriptionId, \
+                    resourceGroupName = vmInstance.resourceGroupName,\
+                    resourceName = vmInstance.name)
 
     data = getMetricPostData()
     logger.info("Data: " + json.dumps(data))
@@ -60,9 +61,6 @@ def getMetricPostData():
             }
         }
     }
-    # data = "{'time':" + timestamp + "', data : {'baseData': { 'metric': 'VM Info','namespace': 'Samsung', \
-    #                'dimNames': [ 'CPU Utilization Percentage'], 'series': [{'dimValues': [" + cpu_percent + \
-                        "]}]}}}"
         
     return data
 

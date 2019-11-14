@@ -10,6 +10,7 @@ class VMInstance:
                 VMInstance:
                      Id - {vmId}
                      Name - {name}
+                     location - {location}
                      SubscriptionId - {subscriptionId}
                      ResourceGroupName - {resourceGroupName}
                      VMScaleSetName - {vmScaleSetName}
@@ -18,6 +19,7 @@ class VMInstance:
                 """.format(
                     vmId = self.vmId,
                     name = self.name,
+                    location = self.location,
                     subscriptionId = self.subscriptionId,
                     resourceGroupName = self.resourceGroupName,
                     vmScaleSetName = self.vmScaleSetName,
@@ -40,6 +42,7 @@ class VMInstance:
             #populate required instance variables
             self.vmId = response_txt['vmId']
             self.name = response_txt['name']
+            self.location = response_txt['location']
             self.subscriptionId = response_txt['subscriptionId']
             self.vmScaleSetName = response_txt['vmScaleSetName']
             self.resourceGroupName = response_txt['resourceGroupName']

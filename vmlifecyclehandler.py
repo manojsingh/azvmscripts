@@ -69,7 +69,7 @@ def deleteVMFromVMSS():
     vm_delete_url =  config.get('vmss', 'vm_delete_url')
     formatted_url = vm_delete_url.format(subscriptionId = vmInstance.subscriptionId, \
          resourceGroupName = vmInstance.resourceGroupName,\
-              vmScaleSetName = vmInstance.vmScaleSetName, instanceId = vmInstance.vmId)
+              vmScaleSetName = vmInstance.vmScaleSetName)
 
     logger.info("The Delete URL is - " +  formatted_url)
 
@@ -77,7 +77,10 @@ def deleteVMFromVMSS():
         "instanceIds": [vmInstance.vmId]
     }
 
-    requests.delete(formatted_url, data={}, auth=BearerAuth(vmInstance.access_token))
+    headers = {}
+    headers['Authorization'] = "Bearer " + vmInstance.access_token
+
+    requests.post(formatted_url, data=data, headers=headers)
 
 if(isInstanceinPendingDelete()):
     logger.info("Pending Delete is true ...starting custom clean up logic")

@@ -73,6 +73,10 @@ def deleteVMFromVMSS():
 
     logger.info("The Delete URL is - " +  formatted_url)
 
+    data = {
+        "instanceIds": [vmInstance.vmId]
+    }
+
     requests.delete(formatted_url, data={}, auth=BearerAuth(vmInstance.access_token))
 
 if(isInstanceinPendingDelete()):

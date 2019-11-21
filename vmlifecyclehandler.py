@@ -64,7 +64,7 @@ def stopCustomMetricFlow():
 Call the VMSS Rest API to Delete the VM 
 """
 def deleteVMFromVMSS():
-    logger.info("Deleting the VM from VMSS")
+    logger.info("Deleting the VM from VMSS, Id: "+ vmInstance.vmId)
 
     vm_delete_url =  config.get('vmss', 'vm_delete_url')
     formatted_url = vm_delete_url.format(subscriptionId = vmInstance.subscriptionId, \
